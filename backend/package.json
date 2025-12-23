@@ -1,0 +1,39 @@
+{
+  "name": "matcha",
+  "version": "1.0.0",
+  "description": "Matcha dating application",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "nodemon --exec ts-node server.ts",
+    "watch": "tsc -w"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^4.17.25",
+    "@types/node": "^25.0.3",
+    "@types/pg": "^8.11.0",
+    "concurrently": "^9.2.1",
+    "nodemon": "^3.1.11",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RyukaRockwells/matcha.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RyukaRockwells/matcha/issues"
+  },
+  "homepage": "https://github.com/RyukaRockwells/matcha#readme"
+}
