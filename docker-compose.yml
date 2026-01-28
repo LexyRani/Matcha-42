@@ -23,14 +23,12 @@ services:
     image: postgres:15-alpine
     container_name: matcha_db
     restart: unless-stopped
-    environment:
-      - POSTGRES_USER=matcha
-      - POSTGRES_PASSWORD=matcha_password
-      - POSTGRES_DB=matcha_db
+    env_file:
+      - ./backend/.env
     ports:
       - "5432:5432"
     volumes:
-      - ./backend/src/database/schema.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./backend/src/database/matcha.sql:/docker-entrypoint-initdb.d/init.sql
       - postgres_data:/var/lib/postgresql/data
 
 volumes:
