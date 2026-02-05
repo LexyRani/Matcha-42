@@ -1,6 +1,7 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, Router } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import routes from './src/routes';
 
 dotenv.config();
 
@@ -25,3 +26,5 @@ app.get('/health', (req: Request, res: Response) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+app.use('/api', routes); // All routes begins by /api
