@@ -45,22 +45,21 @@ export function Register()
             setErrors(newErrors);
             return;
         }
-        console.log("Formulaire valide !", result.data);
-        alert("Compte créé avec succés ! (Simultation)");
+        //[ ]TODO: call API endpoint
     }
 
     return(
         <div className="min-h-screen flex flex-col p-6 max-w-md mx-auto">
             <button onClick={() => navigate(-1)} className="mb-8 p-2 hover:bg-gray-100 rounded-full transition-colors self-start"> <ArrowLeft className="w-6 h-6 text-gray-700" /></button>
             <h1 className="text-3xl font-bodoni font-bold mb-8"> Create your account </h1>
-            <form className="space-y-4" onSubmit={handlesubmit}>
+            <form className="space-y-4" onSubmit={handlesubmit} noValidate>
             {/* 1. Identité */}
             <div className="grid grid-cols-2 gap-4">
                 <Input label="First Name" name="firstName" value={formData.firstName} onChange={handleChange} error={errors.firstName} placeholder="John" type="text"/>
                 <Input label="Last Name" name="lastName" value={formData.lastName} onChange={handleChange} error={errors.lastName} placeholder="Doe" type="text" />
             </div>
             {/* 2. Username & Email */}
-                <Input  label="Username" name="username" value={formData.username} onChange={handleChange} error={errors.username} placeholder="johndoe123" type="text"/>
+                <Input label="Username" name="username" value={formData.username} onChange={handleChange} error={errors.username} placeholder="johndoe123" type="text"/>
                 <Input label="Email Address" name="email" value={formData.email} onChange={handleChange} error={errors.email} placeholder="john@example.com" type="email" />
              {/* 3. Mots de passe */}
                 <Input label="Password" name="password" value={formData.password} onChange={handleChange} error={errors.password} placeholder="••••••••" type="password"/>
