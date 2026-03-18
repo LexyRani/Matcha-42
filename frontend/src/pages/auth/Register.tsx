@@ -50,7 +50,7 @@ export function Register()
 
     return(
         <div className="min-h-screen flex flex-col p-6 max-w-md mx-auto bg-[#EBB3B8]/40">
-            <button onClick={() => navigate(-1)} className="mb-8 p-2 hover:bg-gray-100 rounded-full transition-colors self-start"> <ArrowLeft className="w-6 h-6 text-gray-700" /></button>
+            <button onClick={() => navigate(-1)} className="mb-8 p-2 hover:bg-gray-100 rounded-full transition-colors self-start" aria-label="Go back"> <ArrowLeft className="w-6 h-6 text-gray-700" /></button>
             <h1 className="text-3xl font-bodoni font-bold mb-8"> Create your account </h1>
             <form className="space-y-4" onSubmit={handleSubmit} noValidate>
             {/* Identité */}
