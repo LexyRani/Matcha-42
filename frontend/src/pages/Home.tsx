@@ -17,7 +17,6 @@ export function Home()
                 <Button label="Login" onClick={()=> navigate("auth/login")}/>
                 <Button label = "Sign up" onClick={()=> navigate("auth/register")}/>
             </div>
-              <footer className="mt-auto pb-4 font-bodoni text-xs text-gray-400">© 2026 Matcha Inc.</footer>
         </div>
     );
 }

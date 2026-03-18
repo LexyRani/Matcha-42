@@ -55,7 +55,7 @@ describe('RegisterForm Integration', () => {
     // 5. Vérifier qu'il n'y a PAS d'erreur
     await waitFor(() => {
         expect(screen.queryByText(/Invalid email address/i)).not.toBeInTheDocument();
-        //message de succès (alert ou autre), tu peux le vérifier ici
+        //message de succès (alert ou autre)
     });
   });
 
