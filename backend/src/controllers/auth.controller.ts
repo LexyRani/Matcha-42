@@ -1,24 +1,11 @@
-import { Router, Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { RegisterDTO } from "../dto/register.dto";
 import authService from "../services/auth.services"
 
-const router = Router();
 
-// email
-// username
-// lastname
-// firstname
-// passwordhash
-
-export const register = async (req: Request, res: Response) => {
+export const register = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const payload: RegisterDTO = req.body;
-
-		if (!payload.email || !payload.username || !payload.password) {
-			return res.status(400).json({
-				error: 'Missing required fields'
-			});
-		}
 
 		const response = await authService.register(payload);
 
@@ -31,10 +18,8 @@ export const register = async (req: Request, res: Response) => {
 				passwordHash: response
 			}
 		});
-	} catch (error) {
-		return res.status(500).json({
-			error: 'Internal server error'
-		});
+	} catch (error: any) {
+		next(error);
 	}
 };
 

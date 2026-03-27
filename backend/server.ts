@@ -2,6 +2,7 @@ import express, { Request, Response, Router } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import routes from './src/routes';
+import { errorHandler } from './src/middleware/error.middleware';
 
 dotenv.config();
 
@@ -22,9 +23,11 @@ app.get('/health', (req: Request, res: Response) => {
   res.json({ status: 'OK' });
 });
 
+app.use('/api', routes); // All routes begins by /api
+
+app.use(errorHandler); // Global error handler
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-app.use('/api', routes); // All routes begins by /api

@@ -29,6 +29,7 @@ services:
       - "5432:5432"
     volumes:
       - ./backend/src/database/matcha.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./backend/src/database/seed.sql:/docker-entrypoint-initdb.d/seed.sql
       - postgres_data:/var/lib/postgresql/data
 
 volumes:
