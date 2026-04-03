@@ -36,7 +36,7 @@ CREATE TABLE "users" (
   "username" varchar(50) UNIQUE NOT NULL,
   "password_hash" varchar(255) NOT NULL,
   "birthdate" date NOT NULL,
-  "gender" genders NOT NULL,
+  "gender" genders,
   "sexual_preference" orientations NOT NULL DEFAULT 'both',
   "fame_rating" integer DEFAULT 0,
   "longitude" decimal(11,8),
