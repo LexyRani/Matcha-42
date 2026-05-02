@@ -10,14 +10,28 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=development
-      - PORT=3000
+      - .env
     volumes:
       - ./backend:/usr/src/app
       - /usr/src/app/node_modules
     command: npm run dev
     depends_on:
       - db
+    networks: 
+      - matcha
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    networks: 
+      - matcha
+    environment:
+      - .env
 
   db:
     image: postgres:15-alpine
@@ -31,6 +45,13 @@ services:
       - ./backend/src/database/matcha.sql:/docker-entrypoint-initdb.d/init.sql
       - ./backend/src/database/seed.sql:/docker-entrypoint-initdb.d/seed.sql
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - matcha
+
+networks: 
+  matcha:
+    name: matcha
+    driver: bridge
 
 volumes:
   postgres_data:
