@@ -74,7 +74,7 @@ describe('register - username', () => {
 	});
 	it('should throw 400 if username is missing', async () => {
 		await expect(authServices.register({
-			username: 'johndoe',
+			username: '',
 			email: 'test@test.com',
 			password: 'P@ssw0rd42!',
             birthdate: '1999-01-01',
@@ -83,6 +83,6 @@ describe('register - username', () => {
             gender: 'male'
 		}))
 		.rejects
-		.toThrow(new ApiError(400, 'Username is already used'));
+		.toThrow(new ApiError(400, 'Missing required fields'));
 	});
 });
