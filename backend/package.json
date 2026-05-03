@@ -39,13 +39,5 @@
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/RyukaRockwells/matcha.git"
-  },
-  "bugs": {
-    "url": "https://github.com/RyukaRockwells/matcha/issues"
-  },
-  "homepage": "https://github.com/RyukaRockwells/matcha#readme"
+  }
 }

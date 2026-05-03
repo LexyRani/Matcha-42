@@ -14,7 +14,6 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 			user: {
 				email: payload.email,
 				username: payload.username,
-				password: payload.password,
 				passwordHash: response
 			}
 		});

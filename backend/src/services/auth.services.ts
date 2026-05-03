@@ -43,7 +43,7 @@ const register = async (payload: RegisterDTO) => {
 
 	// TODO: Faire la sauvegarde de l'utilisateur en BDD
 	// (first_name: string, last_name: string, username: string, email: string, password: string, birthdate: string, gender: string)
-	const result = await UserModel.createUser(payload.first_name, payload.last_name, payload.username, payload.email, hashPassword, payload.birthdate, payload.gender)
+	const result = await UserModel.createUser(payload.first_name, payload.last_name, payload.email, payload.username, hashPassword, payload.birthdate, payload.gender)
 	await TokenModel.createVerificationToken(result.user_id, token);
 	await sendEmail(
 		payload.email,
@@ -51,7 +51,7 @@ const register = async (payload: RegisterDTO) => {
 		`
 			<h1>Bienvenue sur Matcha !</h1>
 			<p>Clique sur le lien ci-dessous pour vérifier ton compte :</p>
-			<a href="http://localhost:3000/api/auth/verify?token=${token}">
+			<a href="${process.env.BACKEND_URL}/api/auth/verify?token=${token}">
 				Vérifier mon compte
 			</a>
 			<p>Ce lien expire dans 24h.</p>
@@ -62,4 +62,3 @@ const register = async (payload: RegisterDTO) => {
 }
 
 export default { register };
-

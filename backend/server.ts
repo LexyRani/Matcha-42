@@ -8,9 +8,18 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const requiredEnvVars = ['JWT_SECRET', 'POSTGRES_PASSWORD', 'POSTGRES_DB'];
+
+for (const envVar of requiredEnvVars) {
+    if (!process.env[envVar]) {
+        console.error(`❌ Missing required environment variable: ${envVar}`);
+        process.exit(1);
+    }
+}
+
 
 // Middleware
-app.use(cors());
+app.use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:5173' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
