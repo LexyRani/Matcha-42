@@ -35,9 +35,12 @@ const register = async (payload: RegisterDTO) => {
 	validatePassword(payload.password);
 	const hashPassword = await bcrypt.hash(payload.password, 12)
 
+	if (!process.env.JWT_SECRET)
+		throw new ApiError(500, 'JWT secret not configured');
+
 	const token = jwt.sign(
 		{ username: payload.username },
-		process.env.JWT_SECRET!,
+		process.env.JWT_SECRET,
 		{ expiresIn: '24h' }
 	);
 

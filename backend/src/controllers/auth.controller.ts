@@ -9,14 +9,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 
 		const response = await authService.register(payload);
 
-		return res.status(201).json({
-			message: 'User registered successfully',
-			user: {
-				email: payload.email,
-				username: payload.username,
-				passwordHash: response
-			}
-		});
+		return res.status(201).json(response);
 	} catch (error: any) {
 		next(error);
 	}
