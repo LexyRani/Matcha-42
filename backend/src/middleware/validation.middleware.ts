@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { Request, Response, NextFunction } from "express";
+import { PASSWORD_BLACKLIST } from "../utils/passwordBlacklist";
 
 export const schema = z.object({
 	username: z.string()
@@ -18,7 +19,12 @@ export const schema = z.object({
 		(username) => !['admin', 'root', 'moderator', 'null', 'undefined'].includes(username),
 		"Ce nom d'utilisateur est réservé"
 	),
-	password: z.string(), //TO DO: Définir sa taille, les caractères autorisés, normalement fait dans password.utils.ts
+	password: z.string()
+		.min(10, "Le mot de passe doit contenir au moins 10 caractères")
+		.refine(
+			(password) => !PASSWORD_BLACKLIST.includes(password.toLowerCase()),
+			"Ce mot de passe est trop commun"
+		),
 	email: z.email({ pattern: z.regexes.rfc5322Email }),
 	first_name: z.string(),
 	last_name: z.string(),
