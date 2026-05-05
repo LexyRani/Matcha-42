@@ -5,7 +5,7 @@ export interface User {
 	username: string;
 	first_name: string;
 	last_name: string;
-	password: string;
+	password_hash: string;
 	birthdate: string;
 	gender: string;
 }
@@ -38,11 +38,11 @@ export class UserModel {
 		return result.rows[0];
 	}
 
-	static async createUser(first_name: string, last_name: string, email: string, username: string, password: string, birthdate: string, gender: string) {
+	static async createUser(first_name: string, last_name: string, email: string, username: string, password_hash: string, birthdate: string, gender: string) {
 		const result = await pool.query(
 			'INSERT INTO "users" ("first_name", "last_name", "email", "username", "password_hash", "birthdate", "gender") \
 			VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "user_id"',
-			[first_name, last_name, email, username, password, birthdate, gender]
+			[first_name, last_name, email, username, password_hash, birthdate, gender]
 		);
 		return result.rows[0];
 	}

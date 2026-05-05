@@ -20,6 +20,7 @@ export const schema = z.object({
 		"Ce nom d'utilisateur est réservé"
 	),
 	password: z.string()
+		// ⚠️ Ces règles doivent rester synchronisées avec validatePassword dans password.utils.ts
 		.min(10, "Le mot de passe doit contenir au moins 10 caractères")
 		.refine(
 			(password) => !PASSWORD_BLACKLIST.includes(password.toLowerCase()),

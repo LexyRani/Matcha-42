@@ -10,6 +10,7 @@ export const validatePassword = (password: string): void => {
         throw new ApiError(400, 'Password is too common');
   const score = zxcvbn(password).score;
 
+  // ⚠️ Ces règles doivent rester synchronisées avec le schema Zod dans validation.middleware.ts
   if (password.length < 10)
     throw new ApiError(400, 'Password must be at least 10 characters long');
 
