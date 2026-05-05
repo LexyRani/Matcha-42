@@ -44,8 +44,16 @@ export function Register()
 
             setErrors(newErrors);
             return;
-        }
-        //[ ]TODO: call API endpoint
+        } 
+        // const url = "http://localhost:3000/backend/server.ts/";
+        // try{
+        //     const reponse = await fetch(url);
+        //     if(!reponse.ok)
+        //     {
+        //         throw 
+        //     }
+        // }
+        // //[ ]TODO: call API endpoint
     }
 
     return(

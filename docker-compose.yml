@@ -1,24 +1,4 @@
-version: '3.8'
-
 services:
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: backend
-    restart: unless-stopped
-    ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=development
-      - PORT=3000
-    volumes:
-      - ./backend:/usr/src/app
-      - /usr/src/app/node_modules
-    command: npm run dev
-    depends_on:
-      - db
-
   db:
     image: postgres:15-alpine
     container_name: matcha_db
@@ -29,7 +9,54 @@ services:
       - "5432:5432"
     volumes:
       - ./backend/src/database/matcha.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./backend/src/database/seed.sql:/docker-entrypoint-initdb.d/seed.sql
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - matcha
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U matcha -d matcha_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./backend/.env
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run dev
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - matcha
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    # env_file:
+    #   - ./frontend/.env
+    depends_on:
+      - backend
+    networks:
+      - matcha
+
+networks:
+  matcha:
+    name: matcha
+    driver: bridge
 
 volumes:
   postgres_data:
