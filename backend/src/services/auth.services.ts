@@ -6,6 +6,7 @@ import { TokenModel } from "../models/token.model";
 import { sendEmail } from "../config/email";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import { LoginDTO } from "../dto/login.dto";
 
 // ----------- HELPERS -----------
 
@@ -73,4 +74,9 @@ const register = async (payload: RegisterDTO) => {
     return { message: 'Inscription réussie, vérifie ton email.' };
 };
 
-export default { register };
+// ----------- LOGIN -----------
+
+const login = async (payload: LoginDTO) => {
+    return { message: 'Inscription réussie, vérifie ton email.' };
+};
+export default { register, login };
