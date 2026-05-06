@@ -1,23 +1,18 @@
-import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/Button";
 import { Input } from "../../components/ui/Input";
 import React,{ useState } from "react";
-import {ArrowLeft} from 'lucide-react'
 import { Heart } from "lucide-react";
 import { registerSchema } from "../../utils/validation"
 
-
 export function Register()
 {
-
-    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
         username: "",
         email: "",
         password: "",
-        confirmPassword: ""
+        confirmPassword:"",
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,25 +40,16 @@ export function Register()
             setErrors(newErrors);
             return;
         } 
-        // const url = "http://localhost:3000/backend/server.ts/";
-        // try{
-        //     const reponse = await fetch(url);
-        //     if(!reponse.ok)
-        //     {
-        //         throw 
-        //     }
-        // }
-        // //[ ]TODO: call API endpoint
     }
 
     return(
         <div className="flex flex-col md:flex-row md:gap-8 bg-linear-to-br  rounded-2xl p-6 from-pink-50 to-rose-50">
             {/* Element Gauche */}
-            <div className="hidden md:flex md:flex-col md:flex-1 md:min-h-screen md:items-center md:justify-center md:bg-[#EBB3B8]/40 md:p-16 md:space-y-16 rounded-2xl">
+            <div className="hidden md:flex md:flex-col md:flex-1 md:min-h-screen md:items-center md:justify-center md:bg-[#EBB3B8]/40 md:p-16 md:space-y-16">
                 {/* Titre Roocol */}
                 <div className="text-center">
                     <h1 className="text-5xl font-bodoni font-bold text-black mb-8"> Roocool </h1>
-                    <h2 className="text-2xl font-bodoni text-mist-700 mb-2">Inscrit toi et ... </h2>
+                    <h2 className="text-2xl font-bodoni text-mist-700">Inscris toi et ... </h2>
                     <h2 className="text-2xl font-bodoni text-mist-700">Viens roocooler à deux! </h2>
                 </div>
                 {/*  Ceur sautant */}
@@ -73,8 +59,7 @@ export function Register()
             </div>
             {/* Element Droite */}
              {/* <div className="min-h-screen flex-1 flex-col p-6 w-full bg-[#EBB3B8]/30"></div> */}
-            <div className="w-full flex flex-col md:flex-1 md:min-h-screen min-h-screen items-center justify-center md:p-6 p-2 bg-[#EBB3B8]/40 rounded-2xl">
-                <button onClick={() => navigate(-1)} className="mb-8 p-2 hover:bg-gray-100 rounded-full transition-colors self-start" aria-label="Go back"> <ArrowLeft className="w-6 h-6 text-gray-700" /></button>
+            <div className="w-full flex flex-col md:flex-1 md:min-h-screen min-h-screen items-center justify-center md:p-16 p-2 bg-[#EBB3B8]/40 rounded-2xl">
                 <h1 className="text-3xl font-bodoni font-bold mb-8"> Create your account </h1>
                 <form className="space-y-4" onSubmit={handleSubmit} noValidate>
                 {/* Identité */}
@@ -91,6 +76,9 @@ export function Register()
                 {/* Bouton Submit */}
                 <div className="pt-6">
                     <Button label="Create Account" type="submit" />
+                </div>
+                <div className="underline decoration-solid text-center">
+                    <a href="./login">I already have a account</a>
                 </div>
                 </form>
             </div>

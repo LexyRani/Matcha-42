@@ -6,16 +6,23 @@ export function Home()
 {
     const navigate = useNavigate();
     return(
-        <div className="min-h-screen flex flex-col items-center justify-center bg-[#EBB3B8]/40 space-y-8 p-6">
-            <div className="text-center space-y-2 mt-16">
-                <h1 className="text-5xl font-bodoni font-bold text-black mb-8"> Roocool </h1>
+        <div className="flex flex-col md:flex-row md:gap-8 bg-linear-to-br  rounded-2xl p-6 from-pink-50 to-rose-50">
+            {/* Element de gauche */}
+            <div className="min-h-screen flex flex-col flex-1 items-center justify-center bg-[#EBB3B8]/40 space-y-8 p-6">
+                <div className="text-center space-y-2 mt-16">
+                    <h1 className="text-5xl font-bodoni font-bold text-black mb-8"> Bienvenue sur </h1>
+                    <h1 className="text-5xl font-bodoni font-bold text-black mb-8"> Roocool </h1>
+                </div>
+                <div className="mb-8 animate-bounce" >
+                    <Heart className="w-48 h-48 text-accent/50  fill-current"/>
+                </div>         
             </div>
-            <div className="mb-8 animate-bounce" >
-                <Heart className="w-48 h-48 text-accent/50  fill-current"/>
-            </div>         
-            <div className="w-full max-w-sm space-y-4 mt-12 ">
-                <Button label="Login" onClick={()=> navigate("auth/login")}/>
-                <Button label = "Sign up" onClick={()=> navigate("auth/register")}/>
+            {/* Element de droite */}
+            <div className="flex flex-col flex-1 w-full min-h-screen items-center justify-center  bg-[#EBB3B8]/40 p-6">
+                <div className="space-y-8">
+                    <Button label="Login" onClick={()=> navigate("auth/login")}/>
+                    <Button label = "Sign up" onClick={()=> navigate("auth/register")}/>
+                </div>
             </div>
         </div>
     );
