@@ -11,6 +11,10 @@ router.get('/', (req: Request, res: Response) => {
 	});
 });
 
+router.get('/hello', (req: Request, res: Response) => {
+	res.json({ message: 'Hello from Matcha API' });
+});
+
 router.use('/auth', authRoutes);
 
 export default router;

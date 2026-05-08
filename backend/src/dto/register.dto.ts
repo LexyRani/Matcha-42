@@ -7,8 +7,8 @@ export interface RegisterDTO {
 	email: string; // OK
 	username: string; // OK
 	password: string;
-	birthdate: string;
-	gender: string;
+	birthdate?: string;
+	gender?: string;
 	sexual_preference?: string;
 	profile_picture?: string;
 }

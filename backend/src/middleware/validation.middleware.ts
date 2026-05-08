@@ -28,9 +28,7 @@ export const schema = z.object({
 		),
 	email: z.email({ pattern: z.regexes.rfc5322Email }),
 	first_name: z.string(),
-	last_name: z.string(),
-	gender: z.enum(['female', 'male', 'other']),
-	birthdate: z.iso.date()
+	last_name: z.string()
 })
 
 export const validate = (schema: z.ZodSchema) => {

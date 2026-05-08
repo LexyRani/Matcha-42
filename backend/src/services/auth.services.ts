@@ -10,12 +10,6 @@ import { LoginDTO } from "../dto/login.dto";
 
 // ----------- HELPERS -----------
 
-const isAdult = (birthdate: string): boolean => {
-    const today = new Date();
-    const adultDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
-    return new Date(birthdate) <= adultDate;
-};
-
 const validateRegisterPayload = async (payload: RegisterDTO): Promise<void> => {
     if (!payload.email || !payload.username)
         throw new ApiError(400, 'Missing required fields');
@@ -23,8 +17,6 @@ const validateRegisterPayload = async (payload: RegisterDTO): Promise<void> => {
         throw new ApiError(400, 'Username already exists');
     if (await UserModel.findByEmail(payload.email))
         throw new ApiError(400, 'Email already exists');
-    if (!payload.birthdate || !isAdult(payload.birthdate))
-        throw new ApiError(400, 'User must be at least 18 years old');
     validatePassword(payload.password);
 };
 
@@ -53,6 +45,7 @@ const sendVerificationEmail = async (email: string, token: string): Promise<void
 // ----------- REGISTER -----------
 
 const register = async (payload: RegisterDTO) => {
+    console.log("Registering user with payload:", payload);
     await validateRegisterPayload(payload);
 
     const hashPassword = await bcrypt.hash(payload.password, 12);
@@ -63,9 +56,7 @@ const register = async (payload: RegisterDTO) => {
         payload.last_name,
         payload.email,
         payload.username,
-        hashPassword,
-        payload.birthdate,
-        payload.gender
+        hashPassword
     );
 
     await TokenModel.createVerificationToken(result.user_id, token);

@@ -40,10 +40,8 @@ describe('register - username', () => {
             username: '',
             email: 'test@test.com',
             password: 'P@ssw0rd42!',
-            birthdate: '1999-01-01',
             first_name: 'John',
-            last_name: 'Doe',
-            gender: 'male'
+            last_name: 'Doe'
         }))
         .rejects
         .toThrow(new ApiError(400, 'Missing required fields'));
@@ -57,10 +55,8 @@ describe('register - username', () => {
             username: 'johndoe',
             email: 'test@test.com',
             password: 'P@ssw0rd42!',
-            birthdate: '1999-01-01',
             first_name: 'John',
-            last_name: 'Doe',
-            gender: 'male'
+            last_name: 'Doe'
         }))
         .rejects
         .toThrow(new ApiError(400, 'Username already exists'));
@@ -75,10 +71,8 @@ describe ('register - email', () => {
             username: 'johndoe',
             email: '',
             password: 'P@ssw0rd42!',
-            birthdate: '1999-01-01',
             first_name: 'John',
-            last_name: 'Doe',
-            gender: 'male'
+            last_name: 'Doe'
         }))
         .rejects
         .toThrow(new ApiError(400, 'Missing required fields'));
@@ -92,33 +86,11 @@ describe ('register - email', () => {
             username: 'johndoe',
             email: 'john.doe@example.com',
             password: 'P@ssw0rd42!',
-            birthdate: '1999-01-01',
             first_name: 'John',
-            last_name: 'Doe',
-            gender: 'male'
+            last_name: 'Doe'
         }))
         .rejects
         .toThrow(new ApiError(400, 'Email already exists'));
-    });
-
-});
-
-describe('register - birthdate', () => {
-    it('should throw 400 if user is under 18', async () => {
-        const today = new Date();
-        const underageDate = new Date(today.getFullYear() - 17, today.getMonth(), today.getDate()).toISOString().split('T')[0];
-
-        await expect(authServices.register({
-            username: 'johndoe',
-            email: 'test@test.com',
-            password: 'P@ssw0rd42!',
-            birthdate: underageDate,
-            first_name: 'John',
-            last_name: 'Doe',
-            gender: 'male'
-        }))
-        .rejects
-        .toThrow(new ApiError(400, 'User must be at least 18 years old'));
     });
 
 });
@@ -130,10 +102,8 @@ describe('register - password', () => {
             username: 'johndoe',
             email: 'test@test.com',
             password: 'weakweakweak',
-            birthdate: '1999-01-01',
             first_name: 'John',
-            last_name: 'Doe',
-            gender: 'male'
+            last_name: 'Doe'
         }))
         .rejects
         .toThrow(new ApiError(400, 'Password is too weak'));
@@ -148,10 +118,8 @@ describe('register - success', () => {
             username: 'johnnydoe',
             email: 'johnny@test.com',
             password: 'P@ssw0rd42J0yfull',
-            birthdate: '1999-01-01',
             first_name: 'Johnny',
-            last_name: 'Doe',
-            gender: 'male'
+            last_name: 'Doe'
         });
 
         expect(response).toEqual({ message: 'Inscription réussie, vérifie ton email.' });
