@@ -45,7 +45,7 @@ const sendVerificationEmail = async (email: string, token: string): Promise<void
 // ----------- REGISTER -----------
 
 const register = async (payload: RegisterDTO) => {
-    console.log("Registering user with payload:", payload);
+    // console.log("Registering user with payload:", payload);
     await validateRegisterPayload(payload);
 
     const hashPassword = await bcrypt.hash(payload.password, 12);

@@ -1,23 +1,22 @@
-import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/Button";
 import { Input } from "../../components/ui/Input";
 import React, { useState } from "react";
-import { ArrowLeft } from 'lucide-react'
-
+// import { Heart } from "lucide-react";
 import { registerSchema } from "../../utils/validation"
-
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthLayout } from "../../components/layout/AuthLayout";
 
 export function Register() {
-
-    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         first_name: "",
         last_name: "",
         username: "",
         email: "",
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
     });
+
+    const navigate = useNavigate();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -50,14 +49,16 @@ export function Register() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),
             });
+            
+            const data = await reponse.json();
 
             if (!reponse.ok) {
-                throw new Error("Registration failed");
+                setErrors({ form: data.error || "Registration failed" });
+                return;
             }
 
-            const data = await reponse.json();
             console.log("Success:", data);
-            navigate("/login"); // ou là où tu veux rediriger
+            navigate("/auth/login"); // ou là où tu veux rediriger
 
         } catch (error) {
             console.error("Registration failed:", error);
@@ -66,8 +67,8 @@ export function Register() {
     }
 
     return (
-        <div className="min-h-screen flex flex-col p-6 max-w-md mx-auto bg-[#EBB3B8]/40">
-            <button onClick={() => navigate(-1)} className="mb-8 p-2 hover:bg-gray-100 rounded-full transition-colors self-start" aria-label="Go back"> <ArrowLeft className="w-6 h-6 text-gray-700" /></button>
+        <AuthLayout>
+            {/* <div className="w-full flex flex-col md:flex-1 md:min-h-screen min-h-screen items-center justify-center md:p-16 p-2 bg-[#EBB3B8]/40 rounded-2xl"> */}
             <h1 className="text-3xl font-bodoni font-bold mb-8"> Create your account </h1>
             <form className="space-y-4" onSubmit={handleSubmit} noValidate>
                 {/* Identité */}
@@ -85,7 +86,11 @@ export function Register() {
                 <div className="pt-6">
                     <Button label="Create Account" type="submit" />
                 </div>
+                <div className="underline decoration-solid text-center">
+                    <Link to="/auth/login" className="hover:text-black transition-colors">I already have a account</Link>
+                </div>
             </form>
-        </div>
+            {/* </div> */}
+        </AuthLayout>
     );
 }
