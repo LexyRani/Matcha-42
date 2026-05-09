@@ -1,9 +1,9 @@
-import { schema } from '../../middleware/validation.middleware';
+import { registerSchema } from '../../middleware/validation.middleware';
 
 describe('schema - username validation', () => {
 
     it('should reject username too short', () => {
-        const result = schema.safeParse({
+        const result = registerSchema.safeParse({
             username: 'te',
             email: 'test@test.com',
             password: 'P@ssw0rd42!',
@@ -14,7 +14,7 @@ describe('schema - username validation', () => {
     });
 
     it('should reject username too long', () => {
-        const result = schema.safeParse({
+        const result = registerSchema.safeParse({
             username: 'abcdefghijklmnopqrstu',
             email: 'test@test.com',
             password: 'P@ssw0rd42!',
@@ -25,7 +25,7 @@ describe('schema - username validation', () => {
     });
 
     it('should reject username starting with a number', () => {
-        const result = schema.safeParse({
+        const result = registerSchema.safeParse({
             username: '0abc',
             email: 'test@test.com',
             password: 'P@ssw0rd42!',
@@ -36,7 +36,7 @@ describe('schema - username validation', () => {
     });
 
     it('should reject reserved username', () => {
-        const result = schema.safeParse({
+        const result = registerSchema.safeParse({
             username: 'admin',
             email: 'test@test.com',
             password: 'P@ssw0rd42!',
@@ -51,7 +51,7 @@ describe('schema - username validation', () => {
 describe ('schema - email validation', () => {
 
     it('should reject invalid email', () => {
-        const result = schema.safeParse({
+        const result = registerSchema.safeParse({
             username: 'johndoe',
             email: 'invalid_email',
             password: 'P@ssw0rd42!',
@@ -66,7 +66,7 @@ describe ('schema - email validation', () => {
 describe ('schema - password validation', () => {
 
     it('should reject password too short', () => {
-        const result = schema.safeParse({
+        const result = registerSchema.safeParse({
             username: 'johndoe',
             email: 'test@test.com',
             password: 'weak',
@@ -81,7 +81,7 @@ describe ('schema - password validation', () => {
 describe ('schema - valid payload', () => {
 
     it('should accept valid payload', () => {
-        const result = schema.safeParse({
+        const result = registerSchema.safeParse({
             username: 'johndoet',
             email: 'test@test.com',
             password: 'P@ssw0rd42J0yfull',

@@ -67,7 +67,28 @@ const register = async (payload: RegisterDTO) => {
 
 // ----------- LOGIN -----------
 
+const validateLoginPayload = async (payload: LoginDTO): Promise<void> => {
+    if (!payload.username || !payload.password)
+        throw new ApiError(400, 'Missing required fields');
+}
+
 const login = async (payload: LoginDTO) => {
-    return { message: 'Inscription réussie, vérifie ton email.' };
+
+    await validateLoginPayload(payload);
+
+    const result = await UserModel.findByUsername(payload.username);
+    console.log("Login attempt for username:", payload.username, "Result from DB:", result);
+
+    if (!result)
+        throw new ApiError(400, 'Invalid username or password');
+
+    if (!result.is_verified)
+        throw new ApiError(400, 'Account not verified');
+
+    const isPasswordValid = await bcrypt.compare(payload.password, result.password_hash);
+    if (!isPasswordValid)
+        throw new ApiError(400, 'Invalid username or password');
+
+    return { message: 'Connexion réussie.' };
 };
 export default { register, login };

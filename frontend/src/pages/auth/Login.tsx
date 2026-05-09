@@ -1,9 +1,9 @@
 import { Button } from "../../components/ui/Button";
 import { Input } from "../../components/ui/Input";
 import React, { useState } from "react";
-import { Heart } from "lucide-react";
+// import { Heart } from "lucide-react";
 import { loginSchema } from "../../utils/validation";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthLayout } from "../../components/layout/AuthLayout";
 
 export function Login() {
@@ -11,6 +11,8 @@ export function Login() {
         username: "",
         password: "",
     });
+
+    const navigate = useNavigate();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -37,6 +39,28 @@ export function Login() {
             });
             setErrors(newErrors);
             return;
+        }
+
+        const url = "/api/auth/login";
+        try {
+            const reponse = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData),
+            });
+            
+            const data = await reponse.json();
+
+            if (!reponse.ok) {
+                setErrors({ form: data.error || "Registration failed" });
+                return;
+            }
+
+            console.log("Success:", data);
+            navigate("/auth/login"); // ou là où tu veux rediriger
+
+        } catch (error) {
+            console.error("Registration failed:", error);
         }
 
         // TODO: Appel API /api/auth/login + gestion token

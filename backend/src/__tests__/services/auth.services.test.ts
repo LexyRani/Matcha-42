@@ -126,3 +126,27 @@ describe('register - success', () => {
     });
 
 });
+
+describe('login - username', () => {
+
+    it('should throw 400 if username is missing', async () => {
+        await expect(authServices.login({
+            username: '',
+            password: 'P@ssw0rd42J0yfull'
+        }))
+        .rejects
+        .toThrow(new ApiError(400, 'Missing required fields'));
+    });
+
+    it('should throw 400 if username does not exist', async () => {
+        const { UserModel } = await import('../../models/user.models');
+        (UserModel.findByUsername as jest.Mock).mockResolvedValueOnce(null);
+
+        await expect(authServices.login({
+            username: 'nonexistent',
+            password: 'P@ssw0rd42J0yfull'
+        }))
+        .rejects
+        .toThrow(new ApiError(400, 'Invalid username or password'));
+    });
+});
