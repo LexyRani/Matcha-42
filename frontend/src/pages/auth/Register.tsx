@@ -1,7 +1,6 @@
 import { Button } from "../../components/ui/Button";
 import { Input } from "../../components/ui/Input";
 import React,{ useState } from "react";
-import { Heart } from "lucide-react";
 import { registerSchema } from "../../utils/validation"
 import { Link } from 'react-router-dom';
 import { AuthLayout } from "../../components/layout/AuthLayout";
@@ -46,7 +45,6 @@ export function Register()
 
     return(
             <AuthLayout>
-                {/* <div className="w-full flex flex-col md:flex-1 md:min-h-screen min-h-screen items-center justify-center md:p-16 p-2 bg-[#EBB3B8]/40 rounded-2xl"> */}
                     <h1 className="text-3xl font-bodoni font-bold mb-8"> Create your account </h1>
                     <form className="space-y-4" onSubmit={handleSubmit} noValidate>
                     {/* Identité */}
@@ -68,7 +66,6 @@ export function Register()
                         <Link to="/auth/login" className="hover:text-black transition-colors">I already have a account</Link>
                     </div>
                     </form>
-                {/* </div> */}
             </AuthLayout>    
     );
 }
