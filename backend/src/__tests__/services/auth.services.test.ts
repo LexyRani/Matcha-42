@@ -149,4 +149,52 @@ describe('login - username', () => {
         .rejects
         .toThrow(new ApiError(400, 'Invalid username or password'));
     });
+
+    it('should throw 400 if password is incorrect', async () => {
+        const { UserModel } = await import('../../models/user.models');
+        (UserModel.findByUsername as jest.Mock).mockResolvedValueOnce({
+            user_id: 1,
+            password_hash: '$2b$12$NFd3tINNpnlOoD5ly/7KreiFmAePKbSkLdGT/bs4YvBwDd5I2gkoS', // hash for 'P@ssw0rd42!'
+            is_verified: true
+        });
+
+        await expect(authServices.login({
+            username: 'johndoe',
+            password: 'WrongPassword'
+        }))
+        .rejects
+        .toThrow(new ApiError(400, 'Invalid username or password'));
+    });
+
+    it('should throw 400 if account is not verified', async () => {
+        const { UserModel } = await import('../../models/user.models');
+        (UserModel.findByUsername as jest.Mock).mockResolvedValueOnce({
+            user_id: 1,
+            password_hash: '$2b$12$NFd3tINNpnlOoD5ly/7KreiFmAePKbSkLdGT/bs4YvBwDd5I2gkoS', // hash for 'P@ssw0rd42!'
+            is_verified: false
+        });
+
+        await expect(authServices.login({
+            username: 'johndoe',
+            password: 'P@ssw0rd42!'
+        }))
+        .rejects
+        .toThrow(new ApiError(400, 'Account not verified'));
+    });
+
+    it('should login successfully with valid credentials', async () => {
+        const { UserModel } = await import('../../models/user.models');
+        (UserModel.findByUsername as jest.Mock).mockResolvedValueOnce({
+            user_id: 1,
+            password_hash: '$2a$12$QMP/kak9Z2qUbYpxdHR.o.OBmyr5ZHiIrc0NegNTWlJDSNI6BvqEm', // hash for 'P@ssw0rd42$chool' en utilisant un round de 12
+            is_verified: true
+        });
+
+        const response = await authServices.login({
+            username: 'johndoe',
+            password: 'P@ssw0rd42$chool'
+        });
+
+        expect(response).toEqual({ message: 'Connexion réussie.' });
+    });
 });

@@ -17,17 +17,17 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 };
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
-	// try {
+	try {
 		const payload: LoginDTO = req.body;
 
-		console.log("Login payload received in controller:", payload);
+		// console.log("Login payload received in controller:", payload);
 
-		// const response = await authService.login(payload);
+		const response = await authService.login(payload);
 
-		// return res.status(201).json(response);
-	// } catch (error: any) {
-	// 	next(error);
-	// }
+		return res.status(201).json(response);
+	} catch (error: any) {
+		next(error);
+	}
 };
 
 export	default	register;

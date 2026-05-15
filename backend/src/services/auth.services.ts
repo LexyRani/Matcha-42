@@ -77,13 +77,15 @@ const login = async (payload: LoginDTO) => {
     await validateLoginPayload(payload);
 
     const result = await UserModel.findByUsername(payload.username);
-    console.log("Login attempt for username:", payload.username, "Result from DB:", result);
+    // console.log("Login attempt for username:", payload.username, "Result from DB:", result);
 
     if (!result)
         throw new ApiError(400, 'Invalid username or password');
 
     if (!result.is_verified)
         throw new ApiError(400, 'Account not verified');
+
+    // console.log("Comparing password for user:", payload.username);
 
     const isPasswordValid = await bcrypt.compare(payload.password, result.password_hash);
     if (!isPasswordValid)
