@@ -14,9 +14,9 @@ const validateRegisterPayload = async (payload: RegisterDTO): Promise<void> => {
     if (!payload.email || !payload.username)
         throw new ApiError(400, 'Missing required fields');
     if (await UserModel.findByUsername(payload.username))
-        throw new ApiError(400, 'Username already exists');
+        throw new ApiError(409, 'Username already exists');
     if (await UserModel.findByEmail(payload.email))
-        throw new ApiError(400, 'Email already exists');
+        throw new ApiError(409, 'Email already exists');
     validatePassword(payload.password);
 };
 
@@ -80,17 +80,35 @@ const login = async (payload: LoginDTO) => {
     // console.log("Login attempt for username:", payload.username, "Result from DB:", result);
 
     if (!result)
-        throw new ApiError(400, 'Invalid username or password');
+        throw new ApiError(401, 'Invalid username or password');
 
     if (!result.is_verified)
-        throw new ApiError(400, 'Account not verified');
+        throw new ApiError(403, 'Account not verified');
 
     // console.log("Comparing password for user:", payload.username);
 
     const isPasswordValid = await bcrypt.compare(payload.password, result.password_hash);
     if (!isPasswordValid)
-        throw new ApiError(400, 'Invalid username or password');
+        throw new ApiError(401, 'Invalid username or password');
 
-    return { message: 'Connexion réussie.' };
+    if (!process.env.JWT_SECRET)
+        throw new ApiError(500, 'JWT_SECRET not configured');
+    const token = jwt.sign(
+        {
+            userId: result.user_id,
+            username: result.username
+        },
+        process.env.JWT_SECRET as string,
+        { expiresIn: '1h' }
+    );
+
+    return {
+        message: 'Connexion réussie.',
+        user: {
+            userId: result.user_id,
+            username: result.username
+        },
+        token};
 };
+
 export default { register, login };
