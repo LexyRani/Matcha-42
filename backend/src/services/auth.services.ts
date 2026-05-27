@@ -67,46 +67,44 @@ const register = async (payload: RegisterDTO) => {
 
 // ----------- LOGIN -----------
 
-const validateLoginPayload = async (payload: LoginDTO): Promise<void> => {
+const validateLoginPayload = (payload: LoginDTO): void => {
     if (!payload.username || !payload.password)
         throw new ApiError(400, 'Missing required fields');
 }
 
 const login = async (payload: LoginDTO) => {
 
-    await validateLoginPayload(payload);
+    validateLoginPayload(payload);
 
-    const result = await UserModel.findByUsername(payload.username);
-    // console.log("Login attempt for username:", payload.username, "Result from DB:", result);
+    const user = await UserModel.findByUsername(payload.username);
 
-    if (!result)
+    if (!user)
         throw new ApiError(401, 'Invalid username or password');
 
-    if (!result.is_verified)
+    if (!user.is_verified)
         throw new ApiError(403, 'Account not verified');
 
-    // console.log("Comparing password for user:", payload.username);
-
-    const isPasswordValid = await bcrypt.compare(payload.password, result.password_hash);
+    const isPasswordValid = await bcrypt.compare(payload.password, user.password_hash);
     if (!isPasswordValid)
         throw new ApiError(401, 'Invalid username or password');
 
-    if (!process.env.JWT_SECRET)
+    const secret = process.env.JWT_SECRET;
+    if (!secret)
         throw new ApiError(500, 'JWT_SECRET not configured');
     const token = jwt.sign(
         {
-            userId: result.user_id,
-            username: result.username
+            userId: user.user_id,
+            username: user.username
         },
-        process.env.JWT_SECRET as string,
+        secret,
         { expiresIn: '1h' }
     );
 
     return {
         message: 'Connexion réussie.',
         user: {
-            userId: result.user_id,
-            username: result.username
+            userId: user.user_id,
+            username: user.username
         },
         token};
 };
