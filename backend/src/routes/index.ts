@@ -7,8 +7,12 @@ router.get('/', (req: Request, res: Response) => {
 	res.json({
 		message: 'Welcome to Matcha API',
 		version: '1.0',
-		endpoints: ['/auth', '/users', '/messages']
+		endpoints: ['/auth']
 	});
+});
+
+router.get('/hello', (req: Request, res: Response) => {
+	res.json({ message: 'Hello from Matcha API' });
 });
 
 router.use('/auth', authRoutes);

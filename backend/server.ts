@@ -5,10 +5,11 @@ import routes from './src/routes';
 import { errorHandler } from './src/middleware/error.middleware';
 
 dotenv.config();
+console.log("Frontend URL from env:", process.env.FRONTEND_URL);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const requiredEnvVars = ['JWT_SECRET', 'POSTGRES_PASSWORD', 'POSTGRES_DB'];
+const requiredEnvVars = ['JWT_SECRET', 'POSTGRES_PASSWORD', 'POSTGRES_DB', 'FRONTEND_URL'];
 
 for (const envVar of requiredEnvVars) {
     if (!process.env[envVar]) {
@@ -19,7 +20,12 @@ for (const envVar of requiredEnvVars) {
 
 
 // Middleware
-app.use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:5173' }));
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

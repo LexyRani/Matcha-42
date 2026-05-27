@@ -6,24 +6,17 @@ import { TokenModel } from "../models/token.model";
 import { sendEmail } from "../config/email";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import { LoginDTO } from "../dto/login.dto";
 
 // ----------- HELPERS -----------
-
-const isAdult = (birthdate: string): boolean => {
-    const today = new Date();
-    const adultDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
-    return new Date(birthdate) <= adultDate;
-};
 
 const validateRegisterPayload = async (payload: RegisterDTO): Promise<void> => {
     if (!payload.email || !payload.username)
         throw new ApiError(400, 'Missing required fields');
     if (await UserModel.findByUsername(payload.username))
-        throw new ApiError(400, 'Username already exists');
+        throw new ApiError(409, 'Username already exists');
     if (await UserModel.findByEmail(payload.email))
-        throw new ApiError(400, 'Email already exists');
-    if (!payload.birthdate || !isAdult(payload.birthdate))
-        throw new ApiError(400, 'User must be at least 18 years old');
+        throw new ApiError(409, 'Email already exists');
     validatePassword(payload.password);
 };
 
@@ -52,6 +45,7 @@ const sendVerificationEmail = async (email: string, token: string): Promise<void
 // ----------- REGISTER -----------
 
 const register = async (payload: RegisterDTO) => {
+    // console.log("Registering user with payload:", payload);
     await validateRegisterPayload(payload);
 
     const hashPassword = await bcrypt.hash(payload.password, 12);
@@ -62,9 +56,7 @@ const register = async (payload: RegisterDTO) => {
         payload.last_name,
         payload.email,
         payload.username,
-        hashPassword,
-        payload.birthdate,
-        payload.gender
+        hashPassword
     );
 
     await TokenModel.createVerificationToken(result.user_id, token);
@@ -73,4 +65,48 @@ const register = async (payload: RegisterDTO) => {
     return { message: 'Inscription réussie, vérifie ton email.' };
 };
 
-export default { register };
+// ----------- LOGIN -----------
+
+const validateLoginPayload = (payload: LoginDTO): void => {
+    if (!payload.username || !payload.password)
+        throw new ApiError(400, 'Missing required fields');
+}
+
+const login = async (payload: LoginDTO) => {
+
+    validateLoginPayload(payload);
+
+    const user = await UserModel.findByUsername(payload.username);
+
+    if (!user)
+        throw new ApiError(401, 'Invalid username or password');
+
+    if (!user.is_verified)
+        throw new ApiError(403, 'Account not verified');
+
+    const isPasswordValid = await bcrypt.compare(payload.password, user.password_hash);
+    if (!isPasswordValid)
+        throw new ApiError(401, 'Invalid username or password');
+
+    const secret = process.env.JWT_SECRET;
+    if (!secret)
+        throw new ApiError(500, 'JWT_SECRET not configured');
+    const token = jwt.sign(
+        {
+            userId: user.user_id,
+            username: user.username
+        },
+        secret,
+        { expiresIn: '1h' }
+    );
+
+    return {
+        message: 'Connexion réussie.',
+        user: {
+            userId: user.user_id,
+            username: user.username
+        },
+        token};
+};
+
+export default { register, login };

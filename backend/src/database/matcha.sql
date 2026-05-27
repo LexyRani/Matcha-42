@@ -35,7 +35,7 @@ CREATE TABLE "users" (
   "email" varchar(255) UNIQUE NOT NULL,
   "username" varchar(50) UNIQUE NOT NULL,
   "password_hash" varchar(255) NOT NULL,
-  "birthdate" date NOT NULL,
+  "birthdate" date,
   "gender" genders,
   "sexual_preference" orientations NOT NULL DEFAULT 'both',
   "fame_rating" integer DEFAULT 0,

@@ -9,7 +9,7 @@ BLUE	= \033[0;34m
 NC		= \033[0m # No Color
 
 # Commandes principales
-.PHONY: up down restart ps logs build clean backend
+.PHONY: up down restart ps logs build clean backend frontend db help
 
 # Démarrer tous les services en mode détaché
 up:
@@ -53,12 +53,12 @@ clean:
 	@echo "${GREEN}Nettoyage terminé!${NC}"
 
 # Démarrer uniquement le frontend
-# frontend:
-# 	@echo "${BLUE}Démarrage du frontend...${NC}"
-# 	@$(DOCKER_COMPOSE) up -d frontend
-# 	@echo "${GREEN}Frontend démarré!${NC}"
-# 	@echo "${YELLOW}Accessible sur: http://localhost:5173${NC}"
-# 	@echo "${YELLOW}Pour voir les logs: docker compose logs -f frontend${NC}"
+frontend:
+	@echo "${BLUE}Démarrage du frontend...${NC}"
+	@$(DOCKER_COMPOSE) up -d frontend
+	@echo "${GREEN}Frontend démarré!${NC}"
+	@echo "${YELLOW}Accessible sur: http://localhost:5173${NC}"
+	@echo "${YELLOW}Pour voir les logs: docker compose logs -f frontend${NC}"
 
 # Démarrer uniquement le backend
 backend:
@@ -69,12 +69,12 @@ backend:
 	@echo "${YELLOW}Pour voir les logs: docker compose logs -f backend${NC}"
 
 # Démarrer uniquement la base de données
-# db:
-# 	@echo "${BLUE}Démarrage de la base de données...${NC}"
-# 	@$(DOCKER_COMPOSE) up -d postgres
-# 	@echo "${GREEN}Base de données démarrée!${NC}"
-# 	@echo "${YELLOW}Accessible sur: localhost:5432${NC}"
-# 	@echo "${YELLOW}Pour voir les logs: docker compose logs -f postgres${NC}"
+db:
+	@echo "${BLUE}Démarrage de la base de données...${NC}"
+	@$(DOCKER_COMPOSE) up -d postgres
+	@echo "${GREEN}Base de données démarrée!${NC}"
+	@echo "${YELLOW}Accessible sur: localhost:5432${NC}"
+	@echo "${YELLOW}Pour voir les logs: docker compose logs -f postgres${NC}"
 
 # Aide
 help:
