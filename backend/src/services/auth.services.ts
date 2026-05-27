@@ -55,8 +55,6 @@ const register = async (payload: RegisterDTO) => {
     await validateRegisterPayload(payload);
 
     const hashPassword = await bcrypt.hash(payload.password, 12);
-    const token = generateVerificationToken(payload.username);
-
     const result = await UserModel.createUser(
         payload.first_name,
         payload.last_name,
@@ -67,10 +65,16 @@ const register = async (payload: RegisterDTO) => {
         payload.gender
     );
 
+    const token = generateVerificationToken(payload.username);
     await TokenModel.createVerificationToken(result.user_id, token);
     await sendVerificationEmail(payload.email, token);
 
     return { message: 'Inscription réussie, vérifie ton email.' };
 };
 
-export default { register };
+const verifyMail = async (token: string) => {
+    if (!await TokenModel.findValidVerificationToken(token))
+        throw new ApiError(400, "Token invalid or expired");
+}
+
+export default { register, verifyMail };

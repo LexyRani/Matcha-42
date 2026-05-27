@@ -20,4 +20,22 @@ export class TokenModel {
 			[user_id, 'verification', token]
 		);
 	}
+
+	// findValidVerificationToken:
+	// Params: token(string)
+	// Description:	Cette méthode permet de rechercher un token et de récupérer les infos depuis
+	// 				user depuis ce token
+	static async findValidVerificationToken(token: string) {
+		const result = await pool.query(
+			`SELECT u.user_id, u.email, u.is_verified
+			FROM tokens t
+			JOIN users u ON t.user_id = u.user_id
+			WHERE t.token = $1
+			AND t.type_token = 'email_verification'
+			AND t.expires_at > NOW()
+			AND u.is_verified = false`,
+			[token]
+		)
+		return result.rows[0] || null;
+	}
 }
