@@ -186,13 +186,13 @@ describe('login - username', () => {
         const { UserModel } = await import('../../models/user.models');
         (UserModel.findByUsername as jest.Mock).mockResolvedValueOnce({
             user_id: 1,
-            password_hash: '$2a$12$QMP/kak9Z2qUbYpxdHR.o.OBmyr5ZHiIrc0NegNTWlJDSNI6BvqEm', // hash for 'P@ssw0rd42$chool' en utilisant un round de 12
+            password_hash: '$2a$12$1NsGTGuc3QghTRoeAw5w3uK1/Vav65aMN80hmJDzL3KKagImSkPsu', // hash for 'P@ssw0rd42$42' en utilisant un round de 12
             is_verified: true
         });
 
         const response = await authServices.login({
             username: 'johndoe',
-            password: 'P@ssw0rd42$chool'
+            password: 'P@ssw0rd42$42'
         });
 
         expect(response).toEqual({ message: 'Connexion réussie.' });
