@@ -45,7 +45,7 @@ export function Register()
 
     return(
             <AuthLayout>
-                    <h1 className="text-3xl font-bodoni font-bold mb-8"> Create your account </h1>
+                    <h1 className="text-4xl font-bodoni font-bold mb-8"> Create your account </h1>
                     <form className="space-y-4" onSubmit={handleSubmit} noValidate>
                     {/* Identité */}
                     <div className="grid grid-cols-2 gap-4">

@@ -1,7 +1,6 @@
 import { Button } from "../../components/ui/Button";
 import { Input } from "../../components/ui/Input";
 import React, { useState } from "react";
-import { Heart } from "lucide-react";
 import { loginSchema } from "../../utils/validation";
 import { Link } from 'react-router-dom';
 import { AuthLayout } from "../../components/layout/AuthLayout";
@@ -46,20 +45,21 @@ export function Login() {
             <AuthLayout>
                 <h1 className="text-4xl font-bodoni font-bold mb-8"> Welcome back </h1>
                 <form className="space-y-4" onSubmit={handleSubmit} noValidate>
-                {/* Username & Email */}
-                    <Input label="Username" name="username" value={formData.username} onChange={handleChange} error={errors.username} placeholder="johndoe123" type="text"/>
-                {/* Mots de passe */}
-                    <Input label="Password" name="password" value={formData.password} onChange={handleChange} error={errors.password} placeholder="••••••••" type="password"/>
-                {/* Bouton Submit */}
-                <div className="underline decoration-solid text center">
-                    <Link to="/auth/password" className="hover:text-black transition-colors">I forgot my password</Link>
-                </div>
-                <div className="pt-6">
-                    <Button label="Login" type="submit" />
-                </div>
-                <div className="underline decoration-solid text-center">
-                    <Link to="/auth/register" className="hover:text-black transition-colors">I want to create an account</Link>
-                </div>
+                    {/* Username & Email */}
+                        <Input label="Username" name="username" value={formData.username} onChange={handleChange} error={errors.username} placeholder="johndoe123" type="text"/>
+                    {/* Mots de passe */}
+                        <Input label="Password" name="password" value={formData.password} onChange={handleChange} error={errors.password} placeholder="••••••••" type="password"/>
+                    {/* Bouton Submit */}
+                    <div className="underline decoration-solid text center">
+                        <Link to="/auth/ForgotPassword" className="hover:text-black transition-colors">I forgot my password</Link>
+                    </div>
+                    <div className="pt-6">
+                        <Button label="Login" type="submit" />
+                        
+                    </div>
+                    <div className="underline decoration-solid text-center">
+                        <Link to="/auth/register" className="hover:text-black transition-colors">I want to create an account</Link>
+                    </div>
                 </form>
             </AuthLayout>
     );
