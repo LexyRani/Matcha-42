@@ -15,11 +15,15 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 	}
 };
 
-export const verifyMail = async (req: Request, res: Response) => {
-	const token = req.query.token as string;
-    if (!token) return res.status(400).json({ error: "Token manquant" });
-    const result = await authService.verifyMail(token);
-    res.json(result);
+export const verifyMail = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const token = req.query.token as string;
+		if (!token) return res.status(400).json({ error: "Token manquant" });
+		const result = await authService.verifyMail(token);
+		return res.status(200).json(result);
+	} catch (error: any) {
+		next(error);
+	}
 }
 
 export default register;

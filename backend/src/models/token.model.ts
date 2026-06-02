@@ -31,11 +31,22 @@ export class TokenModel {
 			FROM tokens t
 			JOIN users u ON t.user_id = u.user_id
 			WHERE t.token = $1
-			AND t.type_token = 'email_verification'
+			AND t.type_token = 'verification'
 			AND t.expires_at > NOW()
 			AND u.is_verified = false`,
 			[token]
 		)
 		return result.rows[0] || null;
+	}
+
+	// deleteToken:
+	// Params: token(string)
+	// Description:	Cette méthode permet de supprimer un token
+	static async deleteToken(token: string) {
+		await pool.query(
+			`DELETE FROM tokens
+			WHERE token = $1`,
+			[token]
+		);
 	}
 }

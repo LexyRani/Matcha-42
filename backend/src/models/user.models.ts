@@ -38,6 +38,10 @@ export class UserModel {
 		return result.rows[0];
 	}
 
+	// createUser:
+	// Params: first_name (string), last_name (string), email (string), username (string), password_hash (string), birthdate (string), gender (string)
+	// Description: CEtte méthode permet de créer un utilisateur avec les paramètres renseignés
+	// Return: un objet utilisateur si créer, sinon null
 	static async createUser(first_name: string, last_name: string, email: string, username: string, password_hash: string, birthdate: string, gender: string) {
 		const result = await pool.query(
 			'INSERT INTO "users" ("first_name", "last_name", "email", "username", "password_hash", "birthdate", "gender") \
@@ -45,5 +49,17 @@ export class UserModel {
 			[first_name, last_name, email, username, password_hash, birthdate, gender]
 		);
 		return result.rows[0];
+	}
+
+	// userIsVerify:
+	// Params: user_id (string)
+	// Description: Cette méthode permet de mettre l'utilisateur renseigné en compte vérifié
+	static async userIsVerify(user_id: string) {
+		await pool.query(
+			`UPDATE "users"
+			SET is_verified = True
+			WHERE user_id = $1`,
+			[user_id]
+		)
 	}
 }

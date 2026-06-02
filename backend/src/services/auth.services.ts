@@ -73,8 +73,14 @@ const register = async (payload: RegisterDTO) => {
 };
 
 const verifyMail = async (token: string) => {
-    if (!await TokenModel.findValidVerificationToken(token))
+    const token_data = await TokenModel.findValidVerificationToken(token)
+    if (!token_data)
         throw new ApiError(400, "Token invalid or expired");
+
+    await UserModel.userIsVerify(token_data.user_id);
+
+    await TokenModel.deleteToken(token);
+    return { message: "Email vérifié avec succès" };
 }
 
 export default { register, verifyMail };

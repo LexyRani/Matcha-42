@@ -27,8 +27,8 @@ export const schema = z.object({
 			"Ce mot de passe est trop commun"
 		),
 	email: z.email({ pattern: z.regexes.rfc5322Email }),
-	first_name: z.string(),
-	last_name: z.string(),
+	first_name: z.string().min(1, "Le prénom est requis"),
+	last_name: z.string().min(1, "Le nom de famille est requis"),
 	gender: z.enum(['female', 'male', 'other']),
 	birthdate: z.iso.date()
 })
