@@ -1,4 +1,4 @@
-import { schema } from '../../middleware/validation.middleware';
+import { schema, validate } from '../../middleware/validation.middleware';
 
 describe('schema - username validation', () => {
 
@@ -328,5 +328,36 @@ describe ('validate middleware', () => {
 
         expect(next).toHaveBeenCalled();
         expect(res.status).not.toHaveBeenCalled();
+    });
+
+    it('should call next() when validation succeeds', () => {
+        const req: any = {
+            body: {
+                username: 'johndoe',
+                email: 'test@test.com',
+                password: 'P@ssw0rd42J0yfull',
+                birthdate: '1999-01-01',
+                first_name: 'John',
+                last_name: 'Doe',
+                gender: 'male'
+            }
+        };
+        
+        const res: any = {
+            status: jest.fn().mockReturnThis(),
+            json: jest.fn().mockReturnThis()
+        };
+        
+        const next = jest.fn();
+        const middleware = validate(schema);
+        
+        middleware(req, res, next);
+        
+        // ✅ Vérifie que next() EST appelé
+        expect(next).toHaveBeenCalled();
+        
+        // ✅ Vérifie que res.status/json ne sont PAS appelés
+        expect(res.status).not.toHaveBeenCalled();
+        expect(res.json).not.toHaveBeenCalled();
     });
 });

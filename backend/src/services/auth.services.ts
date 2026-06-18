@@ -49,6 +49,26 @@ const sendVerificationEmail = async (email: string, token: string): Promise<void
     );
 };
 
+export async function sendEmailWithRetry(email: string, token: string, maxRetries = 3) {
+    let lastError: unknown;
+
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+        await sendVerificationEmail(email, token);
+        return;
+        } catch (error) {
+        lastError = error;
+        console.warn(`Email attempt ${attempt}/${maxRetries} failed, retrying...`);
+
+        if (attempt < maxRetries) {
+            await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+        }
+        }
+    }
+
+    throw lastError;
+}
+
 // ----------- REGISTER -----------
 
 const register = async (payload: RegisterDTO) => {
@@ -67,7 +87,7 @@ const register = async (payload: RegisterDTO) => {
 
     const token = generateVerificationToken(payload.username);
     await TokenModel.createVerificationToken(result.user_id, token);
-    await sendVerificationEmail(payload.email, token);
+    await sendEmailWithRetry(payload.email, token);
 
     return { message: 'Inscription réussie, vérifie ton email.' };
 };
